@@ -1,7 +1,7 @@
 import "dotenv/config"
 import BotWhatsapp from '@bot-whatsapp/bot'
 import database from './database';
-import provider from './provider';
+import providerWS from '@bot-whatsapp/provider/baileys';
 import flow from './flow';
 import { initServer } from "./services/http";
 
@@ -17,9 +17,9 @@ const main = async () => {
     console.log({ botFLow })
 
     const botInstance = await BotWhatsapp.createBot({
-        database,
-        provider,
-        flow
+        database: new MockAdapter() ,
+        provider: BotWhatsapp.createProvider(providerWS)
+        flow: BotWhatsapp.createFlow([])
     })
 
     initServer(botInstance)
